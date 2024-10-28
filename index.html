@@ -390,7 +390,7 @@
 
    <p>France has a number of overseas departments which do not share a time zone with Metropolitan France. In this example, we'll look at three French time zones: <code>Europe/Paris</code>, <code>Pacific/Noumea</code> (the time zone used in New Caledonia), and <code>Pacific/Tahiti</code> (one of the timezones in French Polynesia).</p>
 
-   <p>New Caledonia is one of (but not the) first time zones in France to observe the holiday. Tahiti is one of (but not the) last in France to observe it. The table below shows the dates and times in each of the time zones as Bastille Day is observed around the world. Notice that some of the [=incremental time=] values that are "Bastille Day" in one time zone are either before "Bastille Day" starts or after it ends in the time zones:</p>
+   <p>New Caledonia is one of (but not the) first time zones in France to observe the holiday. Tahiti is one of (but not the) last in France to observe it. The table below shows the dates and times in each of the time zones as Bastille Day is observed around the world. Notice that some of the [=incremental time=] values that are "Bastille Day" in one time zone are either before "Bastille Day" starts or after it ends in the other time zones:</p>
 
    <table>
 	<thead>
@@ -494,25 +494,29 @@
 <section>
 <h3>Serializations</h3>
 
-<p class=issue>Some of the serializations in this section are not currently part of any standard. Work at the IETF on <a href="https://datatracker.ietf.org/doc/draft-ietf-sedate-datetime-extended/">SEDATE</a> might address this gap. Other standards, such as XMLSchema might be affected.</p>
+<p>Serialization of date/time values is necessary for interchange of these kinds of values in document formats and protocols. Which serialization to use depends on the application's <a href="#use-cases">use case</a> and available standards. Serializations that use time zone IDs instead of relying on offsets is RECOMMENDED.</p>
+
+<aside class="note">
+	<p>The serializations in this section that utilized time zone IDs (and not just offsets) were only recently standardized, in [[RFC9557]]. Other standards, such as XMLSchema, cannot currently represent these values.</p>
+</aside>
 <table>
 	<thead>
 		<tr>
-		<th>Name</th>
-		<th>Example</th>
+		<th>Type Being Serialized</th>
+		<th>Serialization to Use</th>
 		<th>Description</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td>Instant, Timestamp</td>
+			<td>Instant, Timestamp, Date</td>
 			<td><code>2007-01-01T01:00:00.000Z</code></td>
 			<td>An <a>incremental time</a> (instant on the timeline) with UTC offset.</td>
 		</tr>
 		<tr>
 			<td>OffsetDateTime</td>
 			<td><code>2007-01-01T01:00:00.000+01:00</code></td>
-			<td>An <a>incremental time</a> with an explicit offset from UTC.</td>
+			<td>An <a>incremental time</a> with an explicit offset from UTC. Zoned Instant is preferred.</td>
 		</tr>
 		<tr>
 			<td>Zoned Offset DateTime</td>
@@ -661,7 +665,7 @@
 		<thead>
 		<tr>
 			<th>Mixed Offsets</th>
-			<th style="padding-left: 30px">Same Offset</th>
+			<th style="padding-left: 30px">Same value converted to UTC</th>
 		</tr>
 		</thead>
         <tbody>
