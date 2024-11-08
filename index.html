@@ -192,6 +192,8 @@
  <p class="definition"><dfn data-lt="universal coordinated time|UTC">Universal Coordinated Time</dfn> or <strong>UTC</strong> is the basis for modern timekeeping. Among other things, it provides a common baseline for converting between incremental and wall time. UTC is also known as GMT (Greenwich Mean Time). There are some subtle differences between the two, but none that the average person would notice. The time zone offset for UTC is <code>0</code>. UTC is often indicated in field-based formats using <code>Z</code>.</p>
   
  <p class="definition"><dfn class="link-ignore export">Local Time Offset</dfn> The different (positive or negative) of a given location from <a>UTC</a>. This is usually expressed as an offset in hours and minutes, such as <code>+10:00</code> or <code>-09:30</code>.</p>
+ 
+ <p class="definition"><dfn class="link-ignore" data-lt="summer time|daylight savings time|DST|daylight time">Daylight Savings Time</dfn> Also called <em>summer time</em> or <em>daylight time</em> and abbreviated <em>DST</em>. The practice of advancing clocks to make better use of longer periods of daylight during the summer, so that darkness falls at a later [=wall time=]. Rules around observation (or non-observation) of DST is one feature of a time zone.</p>
 </section>
 
 </section>
@@ -364,7 +366,7 @@
 
 
 <section id="representing-time">
-	<h3>Representing Time Values in Data Structures</h3>
+	<h3>Representing Dates and Times in Data</h3>
 	
 	<p>There are several ways to represent time data, which vary in suitability according to an application needs.</p>
 
@@ -391,6 +393,8 @@
 	<h3>Field-Based Time</h3>
 	
 	<p>A <a>field-based time</a> divides [=wall time=] into separate field values such as year, month, day, hour, minute, second, etc. Field-based times may or may not be tied to either UTC or the local time zone&mdash;or may be indeterminate. Field-based times are also typically tied to a specific calendar (such as the Gregorian calendar). The formats described by the [[ISO8601]] standard are field-based.</p>
+	
+	<p>Some [=field-based time=] values are on the [=timeline=] (that is, "zone-dependent" values) while others are [=floating time=] values. It's important to distinguish between these two when working with [=field-based time=] to avoid inappropriate conversion of the value.</p>
 
     <aside class="example" title="A field-based time type">
        <p>The <code>tm</code> structure in the C programming language is an example of a field-based time.</p>
@@ -484,12 +488,9 @@ int main(void)
 </aside>
 
 </section>
-</section>
 
-<section id="working-with">
-	<h3>Working with different types of date/time value</h3>
 <section id="converting-float-unfloat">
-	<h3>Converting between incremental and floating time values</h3>
+	<h3>Converting between representations</h3>
 	
 	<p>Sometimes a <a>producer</a> will emit a <a>floating time</a> value when the <a data-cite="i18n-glossary#consumer">consumer</a> expects or requires an <a>incremental time</a> value. In other cases, a <a data-cite="i18n-glossary#consumer">consumer</a> might need to convert a local or otherwise incremental time value into a floating date or time.</p>
 	
@@ -505,7 +506,7 @@ int main(void)
 </section>
 
 <section id="comparing-times">
-	<h2>Comparing Date and Time Values</h2>
+	<h2>Comparing representations</h2>
 	
 	<p>Conversion between or operation on data sets that mix values with and without time zones or [=zone offsets=] presents certain problems. If one wishes to write a comparison between the value of a [=floating time=] value and a non-floating value, then the two values have to be reconciled to us the same reference point on the [=timeline=].</p>
 	
@@ -526,24 +527,25 @@ int main(void)
 </section>
 
 <section id="mixing-incremental-field">
-	<h3>Working in mixed incremental and field-based systems</h3>
+	<h3>Working with mixed representations</h3>
 	
 	<p>[=Incremental time=] and [=field-based time=] differ in the way certain operations work. For example, incremental times can often be directly compared: their integer values determine which is earlier or later. [=Field-based times=] have to be normalized and their individual fields compared.</p>
 	
     <p>[=Field-based times=] are often optimized to allow for various kinds of adjustments to be made to a value while minimizing the chances for error. For example, to set the date <code>2005-08-30</code> forward by one day, an implementation can add 'one unit' to the "day" field and adjust the day, month, and year fields as appropriate to the calendar system. In incremental time, a similar operation might be performed by incrementing the value by <code>24 hours * 60 minutes * 60 seconds * 1000 milliseconds</code>, which is one "logical day". However, there can be errors when a particular day has more or fewer seconds in it (such as occur during daylight saving transitions) or when the unit has a variable size, such as when adding a month or a year, since those fields have variable numbers of days in them.</p>
 
     <p>Bear in mind that rolling fields forwards or backwards in [=field-based times=] can be tricky. For example, Feburary does not always have the same number of days in it. Or consider the problem of incrementing the month forward by one in the date <code>2011-01-30</code>.</p>
+    
+    <p>Serializations of date/time values tend to behave as-if they were field-based, in that they provide human-readable values tied to a specific [=chronology=] (typically the [=ISO Chronology=]). The most familiar example of such a serialization scheme is [[ISO8601]], along with its many flavors and interpretations, such as [[RFC3339]] or [[XMLSchema-2]]. The SQL data types <code>date</code>, <code>time</code>, and <code>timestamp</code> are [=field-based time=] values which are intended to be zone offset independent: they are actually [=floating time=] values! The SQL data type <code>timestamp with time zone</code> is actually the type that should be used for [=incremental time=] values ("timestamps").</p>
+    
+    <p>By contrast with SQL types, programming languages tend to use [=incremental time=] for their primitive time types. They convert to and from field-based serializations demand. As a result, users might not be clear about the differences between these types or can accidentally create a mixture of different representations. For example, a Java programmer using JDBC might access a field in a SQL query using the class <code>java.sql.Date</code>. This class represents the value as an [=incremental time=] in UTC. This adds information inappropriately to [=floating time=] values or can remove zone-offset information from the original [=field-based time=] value.</p>
+    
+    <p>Databases can use [=incremental time=] or either zone offset-dependent or independent field-based structures internally. For example, Oracle databases treat a <code>timestamp</code> field as though it is in the local time zone of the database instance. The combination of application and database time zones coupled with <em>implicit</em> conversions between [=incremental time=] and [=field-based time=] values can result in date/time values changing meaning without the user intending it.</p>
 
-    <p>The SQL data types <code>date</code>, <code>time</code>, and <code>timestamp</code> are [=field-based time=] values which are intended to be zone offset independent: they are actually, technically, floating time values! The data type <code>timestamp with time zone</code> is the zone offset-dependent equivalent of timestamp in SQL. Programming languages, by contrast, tend to use [=incremental time=] and convert to and from a localized textual or field-based representation on demand. Databases can use [=incremental time=] or either zone offset-dependent or independent field-based structures internally. For example, Oracle databases treat a <code>timestamp</code> field as though it is in the local time of the database instance. This can have unusual effects on queries: a [=field-based time=] value that represents a time in a zone that observes daylight saving needs to identify the UTC offset and whether daylight saving is in effect or not in order to disambiguate the repeated (or missing) hour when transitioning to or from daylight saving time (DST) to standard time. For example, in the United States in 2009, any instant between 1 and 2 am on November 1st happened twice, once in DST and a second time in standard time. [=Field-based times=] without a time zone field (such as a SQL <code>timestamp</code>) cannot represent the repeated times unambiguously without supplemental information provided externally.</p>
-
-    <p>As a result, users might not be clear about the differences between these types or may create a mixture of different representations. For example, a Java programmer using JDBC might retrieve incremental times (<code>java.sql.Date</code> objects) from a database, even though the actual field in the database is a (field-based) <code>timestamp</code> value.</p>
-
-    <p>In [[XMLSchema-2]], as with SQL, dates and times are expressed using [=field-based time=]. The date or time can express the zone offset from UTC (for example using a format such as <code>08:00:00+01:00</code>). [=UTC=] is indicated by the letter <code>Z</code> (for example <code>08:00:00Z</code>). The zone offset can also be omitted (producing a [=floating time=] value).
+    <p>In [[XMLSchema-2]], as with SQL, dates and times are expressed using [=field-based time=]. The date or time can express the zone offset from UTC (for example using a format such as <code>08:00:00+01:00</code>). [=UTC=] is indicated by the letter <code>Z</code> (for example <code>08:00:00Z</code>). The zone offset can also be omitted (producing a [=floating time=] value).</p>
 
     <p>Properly speaking, an XML Schema date or time value with a zone offset is field-based/zone offset dependent and one without is field-based/floating.</p>
 
-    <p>If the two types are mixed, then the interpretation of the zone offset is not adequately specified in XML Schema. In [[XPATH-FUNCTIONS]], the interpretation is implementation-defined and is based on an implicit zone offset. This is usually either UTC or whatever the local time offset of the host environment is. The presence or absence of the zone offset in the XML Schema serialized representation might not be indicative of the original data's intention because of the confusion described above. Proper comparisons or processing rely on normalizing all date and time values into zone offset-independent (floating) or zone offset-dependent (field-based zone-dependent) forms and never mixing the two in a particular operation.</p>
-</section> 
+    <p>If the two types are mixed, then the interpretation of the zone offset is not adequately specified in XML Schema. In [[XPATH-FUNCTIONS]], the interpretation is implementation-defined and is based on an implicit zone offset. This is usually either UTC or whatever the local time offset of the host environment is. The presence or absence of the zone offset in the XML Schema serialized representation might not be indicative of the original data's intention because of the confusion described above. Proper comparisons or processing rely on normalizing all date and time values into [=floating time=] or zone offset-dependent (field-based zone-dependent) forms and never mixing the two in a particular operation.</p>
 </section>
 
 <section id="serializations">
@@ -622,6 +624,7 @@ int main(void)
 </table>
 
 </section>
+</section>
 
 <section id="use-cases">
 	<h2>Use Cases</h2>
@@ -653,9 +656,9 @@ int main(void)
 	<aside class="example" title="Example of a time zone change affecting a future event" id="certificate-example">
 	   <p>For example, consider an application that defines certificates. Each certificate has a date-time value that is the "start of authority" (<code>validFrom</code>) moment and a date-time value that is the "end of authority" (<code>validUntil</code>) moment.</p>
 	
-	   <p>Imagine that Certificate A is generated in the time zone <code>America/Los_Angeles</code>. This time zone has a raw offset from UTC of 8 hours and it currently observes daylight savings time between a date in March and a date in November. Certificate A is generated with a <code>validUntil</code> value of <code>2035-07-12T12:00:00-07:00</code>, reflecting the observation of DST during the month of July.</p>
+	   <p>Imagine that Certificate A is generated in the time zone <code>America/Los_Angeles</code>. This time zone has a raw offset from UTC of 8 hours and it currently observes [=daylight savings time=] between a date in March and a date in November. Certificate A is generated with a <code>validUntil</code> value of <code>2035-07-12T12:00:00-07:00</code>, reflecting the observation of DST during the month of July.</p>
 	
-	   <p>After Certificate A was generated (but before it expires), imagine that the time zone <code>America/Los_Angeles</code> decides to stop observing daylight savings time. Then imagine a user wishes to generate Certificate B to replace Certificate A when it expires. If the new certificate is valid "from noon on 12 July", it might be serialized as <code>2035-07-12T12:00:00-08:00</code>, because the time zone's offset will not be in DST any longer. Notice that this is one hour later than the actual expiration of Certificate A.</p>
+	   <p>After Certificate A was generated (but before it expires), imagine that the time zone <code>America/Los_Angeles</code> decides to stop observing [=daylight savings time=]. Then imagine a user wishes to generate Certificate B to replace Certificate A when it expires. If the new certificate is valid "from noon on 12 July", it might be serialized as <code>2035-07-12T12:00:00-08:00</code>, because the time zone's offset will not be in DST any longer. Notice that this is one hour later than the actual expiration of Certificate A.</p>
 	</aside>
 	
 <section id="past-only-use-case">
@@ -720,22 +723,22 @@ int main(void)
 		<thead>
 		<tr>
 			<th>Mixed Offsets</th>
-			<th style="padding-left: 30px">Same value converted to UTC</th>
+			<th>Same value converted to UTC</th>
 		</tr>
 		</thead>
         <tbody>
 			<tr>
 				<td>
-2007-01-01T<strong>01</strong>:00:00.000-01:00<br>
-2007-01-01T<strong>01</strong>:00:00.000Z<br>
-2007-01-01T<strong>01</strong>:00:00.000+01:00<br>
-<strong>2006-12-31</strong>T<strong>23</strong>:00:00.000-01:00
+2007-01-01T01:00:00.000-01:00<br>
+2007-01-01T01:00:00.000Z<br>
+2007-01-01T01:00:00.000+01:00<br>
+2006-12-31T23:00:00.000-01:00
 				</td>
-				<td style="padding-left: 30px">
-2007-01-01T<strong>02</strong>:00:00Z<br>
-2007-01-01T<strong>01</strong>:00:00Z<br>
-2007-01-01T<strong>00</strong>:00:00Z<br>
-2007-01-01T<strong>00</strong>:00:00Z
+				<td>
+2007-01-01T02:00:00.000Z<br>
+2007-01-01T01:00:00.000Z<br>
+2007-01-01T00:00:00.000Z<br>
+2007-01-01T00:00:00.000Z
 				</td>
 			</tr>
         </tbody>		
