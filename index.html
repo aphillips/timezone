@@ -38,7 +38,7 @@
 		  
           };
     </script>
-<!--link rel="stylesheet" href="local.css" /-->
+<link rel="stylesheet" href="local.css">
 
 <script>
 	   const zonesToTest = [ "UTC",
@@ -86,41 +86,7 @@
 	       }
 	   }
 </script>
-<style>
-.letter_anchor {
-    font-weight: bold;
-    color: #66cc00;
-    font-size: 140%;
-    margin-block-start: 3em;
-    color: #54A800;
-    }
-#link_list a {
-    font-weight: bold;
-    
-    font-size: 120%;
-    color: #66cc00;
-    min-width: 1.5em;
-    display: inline-block;
-    text-align: center;
-    color: #54A800;
-    }
-#link_list a:hover {
-    background-color: antiquewhite;
-    }
-.termref {
-    font-style: italic;
-    text-decoration: underline dotted;
-    }
-.alt_name {
-    font-weight: bold;
-    font-style: italic;
-    }
-.see-also {
-    font-size: 80%;
-    font-style: italic;
-    }
-</style>
-<link rel="stylesheet" href="local.css">
+
 </head>
 
 <body onload="currTimeUpdate()">
@@ -187,6 +153,48 @@
 <h2 id="howToUse">Concepts</h2>
 
 <p>This section provides the basic concepts, terminology, and background for those unfamiliar with the origins, processing, and representation of date and time values in modern computer systems.</p>
+
+<section>
+<h3 id="definitions">Definitions</h3>
+
+ <p>These definitions are useful in understanding date/time values.</p>
+
+ <p class="definition"><dfn class="lint-ignore export">Chronology</dfn> or <dfn id="calendar">calendar</dfn> A timekeeping system used to organize dates and times.</p>
+ 
+ <p>Many different chronologies and calendars have been used or are in use today around the world. These different systems have varying rules for organizing and dividing time values.</p>
+ 
+ <p class="definition"><dfn class="lint-ignore export">ISO Chronology</dfn> is based on the [[ISO8601]] standard, which is the <em>de facto</em> world calendar. This system uses a <a>proleptic</a> Gregorian calendar.</p>
+ 
+ <p class="definition">A <dfn data-lt="proleptic">proleptic calendar</dfn> is a calendar that applies modern rules to all times in the past, as if the calendar were observed at that time.</p>
+
+ <p>For example, the Gregorian calendar was created in 1582 CE, but not adopted universally, even by countries observing the Julian calendar. A proleptic Gregorian calendar (and thus, by extension, the <a>ISO Chronology</a>) applies year numbers, leap years, and dating for dates in the past, even when that would be inappropriate historically.</p>
+ 
+ <p class="definition"><dfn class="link-ignore export">Observed Time</dfn> A moment in time based on an observed event or events. For example, "local noon", the shortest day or the year, or the first new moon.</p>
+ 
+ <p class="definition"><dfn class="link-ignore export">Wall Time</dfn> A date or time value as experienced by human beings, so called because the value might be what is shown on a paper calendar or analog clock mounted on the wall in a given location at a given moment.</p>
+ 
+ <p class="definition"><dfn class="link-ignore export">Epoch</dfn> A specific moment in time that serves as a reference point for a given <a>chronology</a>. The most common epoch is the Unix Epoch, which is used by the most common computer timekeeping systems and measures incremental time values from midnight, January 1, 1970 in the UTC time zone, i.e. from <code>1970-01-01T00:00:00.000Z</code></p>
+ 
+ <p class="definition"><dfn class="lint-ignore export">Era</dfn> A grouping within a <a>calendar</a> used to number years. Most eras start with year "1" and count up to the start of the next era. There are some exceptions to this: the Gregorian calendar's era "BCE" counts backwards, with 1 BCE being the year just before 1 CE (1 AD).</p>
+ 
+ <p class="definition"><dfn>Ghost time</dfn> A <a>wall time</a> that can never exist because of time zone or <a>calendar</a> rules. For example, the date `2023-02-29` is a "ghost time" because 2023 is not a leap year in the Gregorian calendar. Similarly, in the `America/Los_Angeles` time zone, the <a>wall time</a> `2:34 a.m.` on the date `2024-03-10` is a "ghost time" because, due to daylight-savings time, the clock skips from `1:59 a.m.` directly to `3:00 a.m.`.</p>
+ 
+ <p class="definition"><dfn class="lint-ignore export">Timeline</dfn> In a given chronology, the fixed sequence of moments, measured against the <a>epoch</a>. A datetime value is said to be <em>on the timeline</em> if it is attached to a discrete moment in time. This is a hallmark of incremental time values.</p>
+ 
+ <p class="definition"><dfn class="link-ignore export">Incremental Time</dfn> A datetime value consisting of monotonically increasing integer units measured from a specific moment in time (which is called the <a>epoch</a>). For example, the moment <code>1970-01-02T00:00:00.000Z</code> in the <a>ISO Chronology</a> might have an incremental time value (measured in milliseconds) of <code>86400000</code>, since there are 86,400 seconds in a day and 1000 ms in a second.</p>
+ 
+ <p class="definition"><dfn>Field-based Time</dfn> A datetime value that stores the time value in separate fields (era, year, month, day, hour, minute, second, millisecond, etc.)</p>
+ 
+ <p class="definition"><dfn data-lt="floating time|plain time|local time" class="link-ignore export">Floating Time</dfn> Any date or time value that is not fixed to a specific incremental time value or time zone. Also called a <em>local</em> or <em>plain</em> date or time value.</p>
+ 
+ <p class="definition"><dfn class="lint-ignore export">Instant</dfn> An <a>incremental time</a> in the Unix <a>epoch</a>. An instant can be converted for display in any <a>calendar</a> and/or time zone and any two instants can be ordered in time.</p>
+ 
+ <p class="definition"><dfn data-lt="universal coordinated time|UTC">Universal Coordinated Time</dfn> or <strong>UTC</strong> is the basis for modern timekeeping. Among other things, it provides a common baseline for converting between incremental and wall time. UTC is also known as GMT (Greenwich Mean Time). There are some subtle differences between the two, but none that the average person would notice. The time zone offset for UTC is <code>0</code>. UTC is often indicated in field-based formats using <code>Z</code>.</p>
+  
+ <p class="definition"><dfn class="link-ignore export">Local Time Offset</dfn> The different (positive or negative) of a given location from <a>UTC</a>. This is usually expressed as an offset in hours and minutes, such as <code>+10:00</code> or <code>-09:30</code>.</p>
+</section>
+
+</section>
 
 <section>
 <h2 id="history">A Brief History of Timekeeping</h2>
@@ -355,6 +363,11 @@
 </section>
 
 
+<section id="representing-time">
+	<h3>Representing Time Values in Data Structures</h3>
+	
+	<p>There are several ways to represent time data, which vary in suitability according to an application needs.</p>
+
 <section id="incremental-times">
 <h3>Incremental Time</h3>
 
@@ -372,6 +385,43 @@
 <p>This also means that incremental datetime values are indepedent of (and generally do not encode) their originating time zone. This is because the monotonic time in the Unix [=Epoch=] is the same everywhere at any given instant. Each incremental time value can be transformed for display using various [=chronologies=], time zone rules or, [=local time offsets=].</p>
 
 <p class="note">Not all incremental time values are tied to specific <a>epoch</a>. A system's clock might be counting from the last time the hardware clock was restarted or some other event. Date values close to January 1, 1970 are often due to an incremental time value of <kbd>0</kbd> or due to malfunctions in or failure to set the system clock.</p>
+</section>
+
+<section id="field-based-times">
+	<h3>Field-Based Time</h3>
+	
+	<p>A <a>field-based time</a> divides [=wall time=] into separate field values such as year, month, day, hour, minute, second, etc. Field-based times may or may not be tied to either UTC or the local time zone&mdash;or may be indeterminate. Field-based times are also typically tied to a specific calendar (such as the Gregorian calendar). The formats described by the [[ISO8601]] standard are field-based.</p>
+
+    <aside class="example" title="A field-based time type">
+       <p>The <code>tm</code> structure in the C programming language is an example of a field-based time.</p>
+       <pre class="C">
+#include &lt;time.h&gt;
+#include &lt;stdio.h&gt;
+
+int main(void)
+{
+  struct tm t;
+  time_t t_of_day;
+  t.tm_year = 2011-1900; /* 1900 based */
+  t.tm_mon = 0;   /* January: zero based! */
+  t.tm_mday = 3;  /* the third */
+  t.tm_hour = 0;  /* midnight */
+  t.tm_min = 0;   /* midnight */
+  t.tm_sec = 0;   /* midnight */
+  t.tm_isdst = 0; /* no DST in January */
+  t_of_day = mktime(&t);  /* convert the tm struct to an incremental time_t */
+  printf(ctime(&t_of_day));
+  return 0;
+}
+</pre>
+    </aside>
+       
+     <p>A field-based time may or may not include information about the time zone being used. In a purely numeric representation, such as <code>time_t</code>, sometimes only the current UTC offset is provided.</p>
+     
+     <aside class="note">
+		 <p>Some modern APIs and data structures mix aspects of [=incremental time=] and [=field-based time=]. Notably Java's <code>java.time</code> Temporal types and the proposed Temporal types in JavaScript provide types like <code>Instant</code> that are "pure" [=incremental times=] as well as more complex types, such as <code>ZonedDateTime</code>, which can be instantiated and accessed by field or incrementally. It's a lot easier for most humans to work with field-based values.</p>
+     </aside>
+       
 </section>
 
 <section id="floating-times">
@@ -434,8 +484,11 @@
 </aside>
 
 </section>
+</section>
 
-<section>
+<section id="working-with">
+	<h3>Working with different types of date/time value</h3>
+<section id="converting-float-unfloat">
 	<h3>Converting between incremental and floating time values</h3>
 	
 	<p>Sometimes a <a>producer</a> will emit a <a>floating time</a> value when the <a data-cite="i18n-glossary#consumer">consumer</a> expects or requires an <a>incremental time</a> value. In other cases, a <a data-cite="i18n-glossary#consumer">consumer</a> might need to convert a local or otherwise incremental time value into a floating date or time.</p>
@@ -451,55 +504,57 @@
 	<p class="advisement">Values received without a time zone or zone offset SHOULD generally be treated as if they are in UTC. Specifications SHOULD provide guidance on how to handle these values. Implementations MAY use some other value for the offset, such as the user agent's local time zone, but only if there is a good reason to do so.</p>
 </section>
 
-<section>
-<h3 id="definitions">Definitions</h3>
+<section id="comparing-times">
+	<h2>Comparing Date and Time Values</h2>
+	
+	<p>Conversion between or operation on data sets that mix values with and without time zones or [=zone offsets=] presents certain problems. If one wishes to write a comparison between the value of a [=floating time=] value and a non-floating value, then the two values have to be reconciled to us the same reference point on the [=timeline=].</p>
+	
+	<aside class="example" title="Values with and without zone offsets">
+		<pre class="xml">
+ <aDateTime>2005-06-07T13:14:27Z</aDateTime>  
+ <bDateTime>2005-06-07T11:00:00</bDateTime> 
+		</pre>
+		
+		<p>If one wishes to write a comparison between the value of <kbd>&lt;aDateTime&gt;</kbd> and <kbd>&lt;bDateTime&gt;</kbd>, then the two values must be reconciled to use the same reference point. <kbd>&lt;aDateTime&gt;</kbd> uses UTC and can easily be converted to computer time or shifted to another zone offset. <kbd>&lt;bDateTime&gt;</kbd> contains no indication of the zone offset. It might be UTC or any other value (currently up to 14 hours different in either direction from UTC).</p>
+	</aside>
+	
+	<p>It is good practice to use a time zone identifier or at least an explicit zone offset wherever possible. If one is not available, use UTC as the implicit zone offset for conversions of this nature. This is because the values are exactly centered in the range of possibilities and because representation internally (as computer time) is usually based on UTC. Since a single reference point has been used it might be possible to unwind the change later even if an erroneous conversion has taken place. When working with multiple documents from various sources, the "implicit" offset of the document may vary widely from that of the implementation doing the processing. If UTC is widely used, the chances of error are reduced.</p>
 
- <p class=issue>I've adopted mostly Java/Joda's terminology here (chronology) vs. using other terms (such as 'calendar').</p>
- 
- <p class=definition><dfn class="lint-ignore export">Chronology</dfn> or <dfn id="calendar">calendar</dfn> A timekeeping system used to organize dates and times.</p>
- 
- <p>Many different chronologies and calendars have been used or are in use today around the world. These different systems have varying rules for organizing and dividing time values.</p>
- 
- <p class=definition><dfn class="lint-ignore export">ISO Chronology</dfn> is based on the [[ISO8601]] standard, which is the <em>de facto</em> world calendar. This system uses a <a>proleptic</a> Gregorian calendar.</p>
- 
- <p class=definition>A <dfn data-lt="proleptic">proleptic calendar</dfn> is a calendar that applies modern rules to all times in the past, as if the calendar were observed at that time.</p>
+    <p>Content and query authors are warned that comparing or processing data sets that contain both date and time values with and without time zones or zone offsets may produce odd results. Such processing should be avoided whenever possible. Generating content that omits zone offset information (where it exists) is a recipe for errors later. Of course, data such as the SQL types cited earlier and which are meant to represent wall time, should continue to omit the zone offset. Query writers can check for the presence (or absence) of zone offset and should do so to modify dates and times explicitly (instead of allowing implicit conversion) whenever possible.</p>
 
- <p>For example, the Gregorian calendar was created in 1582 CE, but not adopted universally, even by countries observing the Julian calendar. A proleptic Gregorian calendar (and thus, by extension, the <a>ISO Chronology</a>) applies year numbers, leap years, and dating for dates in the past, even when that would be inappropriate historically.</p>
- 
- <p class=definition><dfn class="link-ignore export">Observed Time</dfn> A moment in time based on an observed event or events. For example, "local noon", the shortest day or the year, or the first new moon.</p>
- 
- <p class=definition><dfn class="link-ignore export">Wall Time</dfn> A date or time value as experienced by human beings, so called because the value might be what is shown on a paper calendar or analog clock mounted on the wall in a given location at a given moment.</p>
- 
- <p class=definition><dfn class="link-ignore export">Epoch</dfn> A specific moment in time that serves as a reference point for a given <a>chronology</a>. The most common epoch is the Unix Epoch, which is used by the most common computer timekeeping systems and measures incremental time values from midnight, January 1, 1970 in the UTC time zone, i.e. from <code>1970-01-01T00:00:00.000Z</code></p>
- 
- <p class=definition><dfn class="lint-ignore export">Era</dfn> A grouping within a <a>calendar</a> used to number years. Most eras start with year "1" and count up to the start of the next era. There are some exceptions to this: the Gregorian calendar's era "BCE" counts backwards, with 1 BCE being the year just before 1 CE (1 AD).</p>
- 
- <p class=definition><dfn>Ghost time</dfn> A <a>wall time</a> that can never exist because of time zone or <a>calendar</a> rules. For example, the date `2023-02-29` is a "ghost time" because 2023 is not a leap year in the Gregorian calendar. Similarly, in the `America/Los_Angeles` time zone, the <a>wall time</a> `2:34 a.m.` on the date `2024-03-10` is a "ghost time" because, due to daylight-savings time, the clock skips from `1:59 a.m.` directly to `3:00 a.m.`.</p>
- 
- <p class=definition><dfn class="lint-ignore export">Timeline</dfn> In a given chronology, the fixed sequence of moments, measured against the <a>epoch</a>. A datetime value is said to be <em>on the timeline</em> if it is attached to a discrete moment in time. This is a hallmark of incremental time values.</p>
- 
- <p class=definition><dfn class="link-ignore export">Incremental Time</dfn> A datetime value consisting of monotonically increasing integer units measured from a specific moment in time (which is called the <a>epoch</a>). For example, the moment <code>1970-01-02T00:00:00.000Z</code> in the <a>ISO Chronology</a> might have an incremental time value (measured in milliseconds) of <code>86400000</code>, since there are 86,400 seconds in a day and 1000 ms in a second.</p>
- 
- <p class=definition><dfn data-lt="floating time|plain time|local time" class="link-ignore export">Floating Time</dfn> A date or time value that is not fixed to a specific incremental time value or time zone. Also called a <em>local</em> or <em>plain</em> date or time value.</p>
- 
- <p class=definition><dfn class="lint-ignore export">Instant</dfn> An <a>incremental time</a> in the Unix <a>epoch</a>. An instant can be converted for display in any <a>calendar</a> and/or time zone and any two instants can be ordered in time.</p>
- 
- <p class=definition><dfn data-lt="universal coordinated time|UTC">Universal Coordinated Time</dfn> or <strong>UTC</strong> is the basis for modern timekeeping. Among other things, it provides a common baseline for converting between incremental and wall time. UTC is also known as GMT (Greenwich Mean Time). There are some subtle differences between the two, but none that the average person would notice. The time zone offset for UTC is <code>0</code>. UTC is often indicated in field-based formats using <code>Z</code>.</p>
-  
- <p class=definition><dfn class="link-ignore export">Local Time Offset</dfn> The different (positive or negative) of a given location from <a>UTC</a>. This is usually expressed as an offset in hours and minutes, such as <code>+10:00</code> or <code>-09:30</code>.</p>
+    <p class="advisement">When comparing [=floating times=] to [=incremental times=], use UTC as the time zone.</p>
 </section>
 
+<section id="mixing-incremental-field">
+	<h3>Working in mixed incremental and field-based systems</h3>
+	
+	<p>[=Incremental time=] and [=field-based time=] differ in the way certain operations work. For example, incremental times can often be directly compared: their integer values determine which is earlier or later. [=Field-based times=] have to be normalized and their individual fields compared.</p>
+	
+    <p>[=Field-based times=] are often optimized to allow for various kinds of adjustments to be made to a value while minimizing the chances for error. For example, to set the date <code>2005-08-30</code> forward by one day, an implementation can add 'one unit' to the "day" field and adjust the day, month, and year fields as appropriate to the calendar system. In incremental time, a similar operation might be performed by incrementing the value by <code>24 hours * 60 minutes * 60 seconds * 1000 milliseconds</code>, which is one "logical day". However, there can be errors when a particular day has more or fewer seconds in it (such as occur during daylight saving transitions) or when the unit has a variable size, such as when adding a month or a year, since those fields have variable numbers of days in them.</p>
+
+    <p>Bear in mind that rolling fields forwards or backwards in [=field-based times=] can be tricky. For example, Feburary does not always have the same number of days in it. Or consider the problem of incrementing the month forward by one in the date <code>2011-01-30</code>.</p>
+
+    <p>The SQL data types <code>date</code>, <code>time</code>, and <code>timestamp</code> are [=field-based time=] values which are intended to be zone offset independent: they are actually, technically, floating time values! The data type <code>timestamp with time zone</code> is the zone offset-dependent equivalent of timestamp in SQL. Programming languages, by contrast, tend to use [=incremental time=] and convert to and from a localized textual or field-based representation on demand. Databases can use [=incremental time=] or either zone offset-dependent or independent field-based structures internally. For example, Oracle databases treat a <code>timestamp</code> field as though it is in the local time of the database instance. This can have unusual effects on queries: a [=field-based time=] value that represents a time in a zone that observes daylight saving needs to identify the UTC offset and whether daylight saving is in effect or not in order to disambiguate the repeated (or missing) hour when transitioning to or from daylight saving time (DST) to standard time. For example, in the United States in 2009, any instant between 1 and 2 am on November 1st happened twice, once in DST and a second time in standard time. [=Field-based times=] without a time zone field (such as a SQL <code>timestamp</code>) cannot represent the repeated times unambiguously without supplemental information provided externally.</p>
+
+    <p>As a result, users might not be clear about the differences between these types or may create a mixture of different representations. For example, a Java programmer using JDBC might retrieve incremental times (<code>java.sql.Date</code> objects) from a database, even though the actual field in the database is a (field-based) <code>timestamp</code> value.</p>
+
+    <p>In [[XMLSchema-2]], as with SQL, dates and times are expressed using [=field-based time=]. The date or time can express the zone offset from UTC (for example using a format such as <code>08:00:00+01:00</code>). [=UTC=] is indicated by the letter <code>Z</code> (for example <code>08:00:00Z</code>). The zone offset can also be omitted (producing a [=floating time=] value).
+
+    <p>Properly speaking, an XML Schema date or time value with a zone offset is field-based/zone offset dependent and one without is field-based/floating.</p>
+
+    <p>If the two types are mixed, then the interpretation of the zone offset is not adequately specified in XML Schema. In [[XPATH-FUNCTIONS]], the interpretation is implementation-defined and is based on an implicit zone offset. This is usually either UTC or whatever the local time offset of the host environment is. The presence or absence of the zone offset in the XML Schema serialized representation might not be indicative of the original data's intention because of the confusion described above. Proper comparisons or processing rely on normalizing all date and time values into zone offset-independent (floating) or zone offset-dependent (field-based zone-dependent) forms and never mixing the two in a particular operation.</p>
+</section> 
 </section>
 
-<section>
+<section id="serializations">
 <h3>Serializations</h3>
 
-<p>Serialization of date/time values is necessary for interchange of these kinds of values in document formats and protocols. Which serialization to use depends on the application's <a href="#use-cases">use case</a> and available standards. Serializations that use time zone IDs instead of relying on offsets is RECOMMENDED.</p>
+<p>Date/time values often need to be serialized (converted to some string representation) for exchange in various document formats and protocols. Sometimes these serializations can be produced from or used to instantiate [=incremental time=], [=field-based time=], or [=floating time=] datatype values directly. Precisely which serialization to use depends on the application's <a href="#use-cases">use case</a> and available standards. Serializations that use time zone IDs instead of relying on offsets are RECOMMENDED.</p>
 
 <aside class="note">
 	<p>The serializations in this section that utilized time zone IDs (and not just offsets) were only recently standardized, in [[RFC9557]]. Other standards, such as XMLSchema, cannot currently represent these values.</p>
 </aside>
-<table>
+<table class="serialization-table">
 	<thead>
 		<tr>
 		<th>Type Being Serialized</th>
@@ -568,7 +623,7 @@
 
 </section>
 
-<section>
+<section id="use-cases">
 	<h2>Use Cases</h2>
 	
 	<p>There are a number of ways applications can use date and time values. In this section we examine the different common use cases and the serializations or data structures to use for each.</p>
@@ -590,10 +645,10 @@
     
 </section>
 
-<section>
+<section id="past-or-future">
 	<h3>Handling past or future events</h3>
 	
-	<p>Many applications need to work with events that have already occurred, events in the future, or both. When working with these types of values, additional care needs to be used to avoid problems with the way that time zones interact with event planning.</p>
+	<p>Many applications need to work with events that have already occurred, events in the future, or both. When working with these types of values, additional care needs to be used to avoid problems with the way that time zones interact with events.</p>
 	
 	<aside class="example" title="Example of a time zone change affecting a future event" id="certificate-example">
 	   <p>For example, consider an application that defines certificates. Each certificate has a date-time value that is the "start of authority" (<code>validFrom</code>) moment and a date-time value that is the "end of authority" (<code>validUntil</code>) moment.</p>
@@ -650,7 +705,7 @@
 </section>
 </section>
 
-<section>
+<section id="additional-considerations">
 	<h2>Additional Considerations</h2>
 	
 <section>
@@ -661,7 +716,7 @@
 	<aside class="example">
 	<p>It is much easier to work with and debug data values that can be compared visually. When values use different offsets or time zones, the user has to mentally translate the value. This can lead to mistakes. When you read the "mixed offset" list of timestamps below, is it easy to spot that the last two items are identical or that the first three are different?</p>
 
-	<table>
+	<table class="mixed-offset-table">
 		<thead>
 		<tr>
 			<th>Mixed Offsets</th>
@@ -671,20 +726,16 @@
         <tbody>
 			<tr>
 				<td>
-<code>
-2007-01-01T<strong>01:00:00.000</strong>-01:00<br>
-2007-01-01T<strong>01:00:00.000</strong>Z<br>
-2007-01-01T<strong>01:00:00.000</strong>+01:00<br>
-2006-12-31T<strong>23:00:00.000</strong>-01:00
-</code>
+2007-01-01T<strong>01</strong>:00:00.000-01:00<br>
+2007-01-01T<strong>01</strong>:00:00.000Z<br>
+2007-01-01T<strong>01</strong>:00:00.000+01:00<br>
+<strong>2006-12-31</strong>T<strong>23</strong>:00:00.000-01:00
 				</td>
 				<td style="padding-left: 30px">
-<code>
-2007-01-01T<strong>02:00:00</strong>Z<br>
-2007-01-01T<strong>01:00:00</strong>Z<br>
-2007-01-01T<strong>00:00:00</strong>Z<br>
-2007-01-01T<strong>00:00:00</strong>Z
-</code>
+2007-01-01T<strong>02</strong>:00:00Z<br>
+2007-01-01T<strong>01</strong>:00:00Z<br>
+2007-01-01T<strong>00</strong>:00:00Z<br>
+2007-01-01T<strong>00</strong>:00:00Z
 				</td>
 			</tr>
         </tbody>		
@@ -704,16 +755,24 @@
     </ul>
     </p>
     
+    <section id="xslt">
+	<h4>Working with XQuery/XPath/XSLT</h4>
+	
+    <p>If you are a users of specifications such as XQuery [[XQUERY-10]] and XSLT [[XSLT-30]] and other, similar, standards, in addition to the guidelines found elsewhere in this document, take the following into account even if time-zone-sensitive data is rarely used. Sooner or later some data will be affected by the issues described.</p>
+
+    <p class="advisement">Use an explicit zone offset with date, time, and dateTime types, if possible. Include an additional field indicating the time zone if one is not provided.</p>
+    
+    <p class="advisement">Do not apply operations based on date or time types (such as indexing) to collections of data in which some data items have zone offset information while other data items do not have zone offset information.</p>
+    
     <p class="advisement">If you have data that includes implicit and fixed explicit [=local time offsets=], before applying any date- or time-sensitive operations, adjust the zone offset of the implicit data to UTC with functions for zone offset adjustment, cf. <a data-cite="xpath-functions#dateTime-arithmetic">this section</a> in [[[xpath-functions]]].</p>
     
-    <p class="advisement">If you have data that contains both implicit and fixed explicit [=local time offsets=] and you do not want to adjust the data subset which already has a zone offset, make sure that you recognize this data subset, for example via the <a data-cite="xpath-functions#component-extraction-dateTime">component extraction functions</a> [[xpath-functions]].</p>
+    <p class="advisement">If you have data that contains both implicit and fixed explicit [=local time offsets=] and you do not want to adjust the data subset which already has a zone offset, make sure that you recognize this data subset, for example via the <a data-cite="xpath-functions#component-extraction-dateTime">component extraction functions</a> [[XPATH-FUNCTIONS]].</p>
 
-
-	
+</section>
 </section>
 
 
-<section>
+<section id="leap-seconds">
 <h3>Leap Seconds</h3>
 	
 	<p>One quirk of timekeeping is the need for leap seconds. The Earth's rotation is not even and, in general, is slowing down. To keep <a>observed time</a> and <a>incremental time</a> in sync, the [<a href="http://maia.usno.navy.mil/">International Earth Rotation Service</a>] occasionally mandates a "leap second". A leap second usually occurs once or sometimes twice per year and always takes the form of an additional second added to the last minute of the day. Usually the leap second is added to December 31st or June 30th.</p>
@@ -730,10 +789,12 @@
 </p>
 </section>
 </section>
+</section>
 
 <section class="appendix" id="Acknowledgements">
 <h2>Acknowledgements</h2>
 
-<p>This document is based on several previous documents. The original Working Group Note (<a href="http://www.w3.org/TR/2005/NOTE-timezone-20051013/">Working With Timezones</a>) was written by Martin Dürst, Mark Davis, Felix Sasaki, and Addison Phillips. Portions of this document, notably the introduction, were adapted from an older document ("It's about time") and from a Unicode conference presentation ("Time Out of Joint") by Addison Phillips. Information on time zone scenarios is based on work by Norbert Lindenberg. Information about temporal serializations and use cases is based on work by CJ Butenhoff.</p>
+<p>This document is based on several previous documents. The original Working Group Note (<a href="http://www.w3.org/TR/2005/NOTE-timezone-20051013/">Working With Timezones</a>) and a <a href="https://www.w3.org/TR/2011/NOTE-timezone-20110705/">later revision</a> were written by Martin Dürst, Mark Davis, Felix Sasaki, and Addison Phillips. Portions of this document, notably the introduction, were adapted from an older document ("It's about time") and from a Unicode conference presentation ("Time Out of Joint") by Addison Phillips. Information on time zone scenarios is based on work by Norbert Lindenberg. Information about temporal serializations and use cases is based on work by CJ Butenhoff.</p>
+</section>
 </body>
 </html>

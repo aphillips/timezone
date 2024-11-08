@@ -132,3 +132,8 @@ a.self:hover {
     border-right: 6pt solid #E05252;
     margin: 1em auto;
 }
+
+table.serialization-table td {
+   vertical-align: top;
+   border-bottom: 1px solid #ddd;
+}
