@@ -31,7 +31,17 @@
                 { name: "Addison Phillips", mailto: "addisonI18N@gmail.com", company: "Invited Expert", w3cid: 33573 }
                 ],
          
-
+          otherLinks: [
+             {
+               key: "Contributors:",
+               data: [
+                 {
+                   value: "See the Contributors section.",
+                   href: "#contributors",
+                 },
+               ],
+             },
+          ],
 		
 		  github: "w3c/timezone",
 		  group: "i18n",
@@ -67,7 +77,7 @@
 
 		   for (const zone of zonesToTest) {
 			   var datefmt = new Intl.DateTimeFormat('en-US', { timeZone: zone, dateStyle: 'full' });
-			   var timefmt = new Intl.DateTimeFormat('en-US', { timeZone: zone, timeStyle: 'medium' });
+			   var timefmt = new Intl.DateTimeFormat('en-US', { timeZone: zone, timeStyle: 'short', hour12: false });
 			   
 			   var tr = document.createElement('tr'); // table row
 			   var td = document.createElement('td');
@@ -99,6 +109,12 @@
   <p>We welcome comments on this document, but to make it easier to track them, please raise separate issues for each comment, and point to the section you are commenting on using a URL.</p>
 </div>
 
+<section id="contributors">
+<h2 id="Acknowledgements">Contributors</h2><!-- This section was formerly an appendix with this 'id'. -->
+
+<p>This document is based on several previous documents. The original Working Group Note (<a href="http://www.w3.org/TR/2005/NOTE-timezone-20051013/">Working With Timezones</a>) was by Martin Dürst, Mark Davis, Felix Sasaki, and Addison Phillips. A <a href="https://www.w3.org/TR/2011/NOTE-timezone-20110705/">later revision</a> was written by Martin Dürst, Mark Davis, Felix Sasaki, Richard Ishida, and Addison Phillips. Sections [[[#history]]] and [[[#what-is-time-zone]]] were adapted from an article and later a Unicode conference presentation (<cite>Time Out of Joint</cite>) by Addison Phillips. Information on time zone scenarios is based on work by Norbert Lindenberg. Information about temporal serializations and use cases is based on work by CJ Butenhoff.</p>
+</section>
+
 <section>
 <h2 id="introduction">Introduction</h2>
 
@@ -108,6 +124,7 @@
 
 <aside class="note">
    <p>In this document [[RFC2119]] keywords have their usual meaning. Best practices and definitions are set off from the remainder of the text with special formatting.</p>
+   <p class="example">Examples appear with a different background color and decoration like this.</p>
    <p class="advisement">Best practices appear with a different background color and decoration like this.</p>
    <p class="definition">Definitions appear with a different background color and decoration like this.</p>
    <p class="issue-example">Gaps or recommendations for future work appear with a different background color and decoration like this.</p>
@@ -133,7 +150,10 @@
     <li>A business-critical regularly-scheduled process fails to run, but only on certain days of the year.</li>
 </ul>
 
-<p>Your browser's system time is: <code id=currTimeDisplay></code> (<code id=currTime></code>) and your browser's time zone is: <code id=currZone></code>. If a friend in a different time zone views this page at the same instant you do, they might see a very different time&mdash;perhaps even on a different day:</p>
+<aside class="example">
+<p>The system time of your browser when this page was loaded was: <code id=currTimeDisplay></code>. This has an [=incremental time=] value of <code id=currTime></code>.</p>
+<p>Your browser's time zone is: <code id=currZone></code>.</p>
+<p>If a friend in a different time zone views this page at the same instant you do, they might see a very different time&mdash;perhaps even on a different day:</p>
 <div id=zoneOut>
 <table>
 	<thead>
@@ -145,6 +165,7 @@
 	</tbody>
 </table>
 </div>
+</aside>
 
 </section>
 </section>
@@ -194,8 +215,6 @@
  <p class="definition"><dfn class="link-ignore export">Local Time Offset</dfn> The different (positive or negative) of a given location from <a>UTC</a>. This is usually expressed as an offset in hours and minutes, such as <code>+10:00</code> or <code>-09:30</code>.</p>
  
  <p class="definition"><dfn class="link-ignore" data-lt="summer time|daylight savings time|DST|daylight time">Daylight Savings Time</dfn> Also called <em>summer time</em> or <em>daylight time</em> and abbreviated <em>DST</em>. The practice of advancing clocks to make better use of longer periods of daylight during the summer, so that darkness falls at a later [=wall time=]. Rules around observation (or non-observation) of DST is one feature of a time zone.</p>
-</section>
-
 </section>
 
 <section>
@@ -626,6 +645,8 @@ int main(void)
 </section>
 </section>
 
+</section><!-- /concepts -->
+
 <section id="use-cases">
 	<h2>Use Cases</h2>
 	
@@ -792,12 +813,6 @@ int main(void)
 </p>
 </section>
 </section>
-</section>
-
-<section class="appendix" id="Acknowledgements">
-<h2>Acknowledgements</h2>
-
-<p>This document is based on several previous documents. The original Working Group Note (<a href="http://www.w3.org/TR/2005/NOTE-timezone-20051013/">Working With Timezones</a>) and a <a href="https://www.w3.org/TR/2011/NOTE-timezone-20110705/">later revision</a> were written by Martin Dürst, Mark Davis, Felix Sasaki, and Addison Phillips. Portions of this document, notably the introduction, were adapted from an older document ("It's about time") and from a Unicode conference presentation ("Time Out of Joint") by Addison Phillips. Information on time zone scenarios is based on work by Norbert Lindenberg. Information about temporal serializations and use cases is based on work by CJ Butenhoff.</p>
 </section>
 </body>
 </html>
