@@ -31,7 +31,17 @@
                 { name: "Addison Phillips", mailto: "addisonI18N@gmail.com", company: "Invited Expert", w3cid: 33573 }
                 ],
          
-
+          otherLinks: [
+             {
+               key: "Contributors:",
+               data: [
+                 {
+                   value: "See the Contributors section.",
+                   href: "#contributors",
+                 },
+               ],
+             },
+          ],
 		
 		  github: "w3c/timezone",
 		  group: "i18n",
@@ -98,6 +108,12 @@
 <div id="sotd">
   <p>We welcome comments on this document, but to make it easier to track them, please raise separate issues for each comment, and point to the section you are commenting on using a URL.</p>
 </div>
+
+<section id="contributors">
+<h2 id="Acknowledgements">Contributors</h2><!-- This section was formerly an appendix with this 'id'. -->
+
+<p>This document is based on several previous documents. The original Working Group Note (<a href="http://www.w3.org/TR/2005/NOTE-timezone-20051013/">Working With Timezones</a>) was by Martin Dürst, Mark Davis, Felix Sasaki, and Addison Phillips. A <a href="https://www.w3.org/TR/2011/NOTE-timezone-20110705/">later revision</a> was written by Martin Dürst, Mark Davis, Felix Sasaki, Richard Ishida, and Addison Phillips. Sections [[[#history]]] and [[[#what-is-time-zone]]] were adapted from an article and later a Unicode conference presentation (<cite>Time Out of Joint</cite>) by Addison Phillips. Information on time zone scenarios is based on work by Norbert Lindenberg. Information about temporal serializations and use cases is based on work by CJ Butenhoff.</p>
+</section>
 
 <section>
 <h2 id="introduction">Introduction</h2>
@@ -792,12 +808,6 @@ int main(void)
 </p>
 </section>
 </section>
-</section>
-
-<section class="appendix" id="Acknowledgements">
-<h2>Acknowledgements</h2>
-
-<p>This document is based on several previous documents. The original Working Group Note (<a href="http://www.w3.org/TR/2005/NOTE-timezone-20051013/">Working With Timezones</a>) and a <a href="https://www.w3.org/TR/2011/NOTE-timezone-20110705/">later revision</a> were written by Martin Dürst, Mark Davis, Felix Sasaki, and Addison Phillips. Portions of this document, notably the introduction, were adapted from an older document ("It's about time") and from a Unicode conference presentation ("Time Out of Joint") by Addison Phillips. Information on time zone scenarios is based on work by Norbert Lindenberg. Information about temporal serializations and use cases is based on work by CJ Butenhoff.</p>
 </section>
 </body>
 </html>
