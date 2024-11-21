@@ -77,7 +77,7 @@
 
 		   for (const zone of zonesToTest) {
 			   var datefmt = new Intl.DateTimeFormat('en-US', { timeZone: zone, dateStyle: 'full' });
-			   var timefmt = new Intl.DateTimeFormat('en-US', { timeZone: zone, timeStyle: 'medium' });
+			   var timefmt = new Intl.DateTimeFormat('en-US', { timeZone: zone, timeStyle: 'short', hour12: false });
 			   
 			   var tr = document.createElement('tr'); // table row
 			   var td = document.createElement('td');
@@ -150,7 +150,10 @@
     <li>A business-critical regularly-scheduled process fails to run, but only on certain days of the year.</li>
 </ul>
 
-<p>Your browser's system time is: <code id=currTimeDisplay></code> (<code id=currTime></code>) and your browser's time zone is: <code id=currZone></code>. If a friend in a different time zone views this page at the same instant you do, they might see a very different time&mdash;perhaps even on a different day:</p>
+<aside class="example">
+<p>The system time of your browser when this page was loaded was: <code id=currTimeDisplay></code>. This has an [=incremental time=] value of <code id=currTime></code>.</p>
+<p>Your browser's time zone is: <code id=currZone></code>.</p>
+<p>If a friend in a different time zone views this page at the same instant you do, they might see a very different time&mdash;perhaps even on a different day:</p>
 <div id=zoneOut>
 <table>
 	<thead>
@@ -162,6 +165,7 @@
 	</tbody>
 </table>
 </div>
+</aside>
 
 </section>
 </section>
